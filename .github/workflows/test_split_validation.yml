@@ -71,12 +71,18 @@ jobs:
           # checkout the repository with reference to the SHA of the HEAD 
           # commit of the branch that is being merged into the Base
           # ------------------------------------------------------------------
+          # - name: Checkout repository
+          #   uses: actions/checkout@v3
+          #   with:
+          #     ref: ${{ github.event.pull_request.head.sha }}
+          #     fetch-depth: 1
+
+
           - name: Checkout repository
             uses: actions/checkout@v3
             with:
-              ref: ${{ github.event.pull_request.head.sha }}
-              fetch-depth: 1
-
+              ref: 'main'
+              path: './repo/'
 
           # Get changes from pull request for later use
           # --------------------------------------------      
@@ -111,7 +117,7 @@ jobs:
               PR_NUMBER: ${{ github.event.number }}
             run: |
               Rscript ./tools/RCode/validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
-              --hub ./   --split location   --out chunks/   --log validation_errors.log2
+              --hub ./repo   --split location   --out chunks/   --log validation_errors.log2
 
               #library("hubValidations")
               # v <- hubValidations::validate_pr(
