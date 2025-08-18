@@ -101,7 +101,7 @@ jobs:
               files: ${{ steps.get_changed_files.outputs.all_changed_files }}
               PR_NUMBER: ${{ github.event.number }}
             run: |
-              Rscript validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
+              Rscript ./tools/RCode/validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
               --hub ./   --split location   --out chunks/   --log validation_errors.log2
 
               #library("hubValidations")
