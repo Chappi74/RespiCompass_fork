@@ -19,8 +19,8 @@ jobs:
     validate-submission_job:
         runs-on: ubuntu-22.04
         
-        outputs:
-          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+        # outputs:
+        #   changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
 
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -86,9 +86,9 @@ jobs:
 
           # Get changes from pull request for later use
           # --------------------------------------------      
-          - name: Get changes
-            id: get_changed_files
-            uses: tj-actions/changed-files@v46
+          # - name: Get changes
+          #   id: get_changed_files
+          #   uses: tj-actions/changed-files@v46
 
 
           # Checkout the python tools repo
@@ -102,19 +102,19 @@ jobs:
         
           # Trace changes 
           # ---------------------------------
-          - name: List all changed files
-            run: |
-              for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
-                echo "$file was changed"
-              done
+          # - name: List all changed files
+          #   run: |
+          #     for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
+          #       echo "$file was changed"
+          #     done
 
 
           # Validate data submission
           # ---------------------------------
           - name: Run validations
-            env:
-              files: ${{ steps.get_changed_files.outputs.all_changed_files }}
-              PR_NUMBER: ${{ github.event.number }}
+            # env:
+              # files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+              # PR_NUMBER: ${{ github.event.number }}
             run: |
               Rscript ./tools/RCode/validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
               --hub ./repo   --split location   --out chunks/   --log validation_errors.log2
