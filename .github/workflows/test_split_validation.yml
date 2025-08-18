@@ -101,7 +101,7 @@ jobs:
               files: ${{ steps.get_changed_files.outputs.all_changed_files }}
               PR_NUMBER: ${{ github.event.number }}
             run: |
-              validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
+              Rscript validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
               --hub ./   --split location   --out chunks/   --log validation_errors.log2
 
               #library("hubValidations")
@@ -112,7 +112,7 @@ jobs:
               # )
               #hubValidations::check_for_errors(v, verbose = TRUE)
                                     
-            shell: Rscript {0}
+            #shell: Rscript {0}
 
           # Validate derived_task_ids since their validation
           # is currently skipped in the validate_pr
