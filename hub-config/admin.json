@@ -1,6 +1,6 @@
 {
     "schema_version": "https://raw.githubusercontent.com/hubverse-org/schemas/main/v5.0.0/admin-schema.json",
-    "name": "RespiCompass - European Scenario Modelling Hub",
+    "name": "RespiCompass - Testing Scenario Modelling Hub",
     "maintainer": "ISI Foundation",
     "contact": {
         "name": "Paolo Milano",
