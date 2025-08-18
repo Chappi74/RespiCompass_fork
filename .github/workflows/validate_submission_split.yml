@@ -79,7 +79,7 @@ jobs:
           - name: checkout python tools repo
             uses: actions/checkout@v3
             with:
-              repository: 'european-modelling-hubs/hub-tools'
+              repository: 'Testing-Forecast-Actions/hub-tools'
               ref: 'main'
               path: './tools/'
         
@@ -153,7 +153,7 @@ jobs:
     # to a json db for further upload to the web-server platform
     call-persisting-wf_job:
       needs: validate-submission_job
-      uses: european-modelling-hubs/RespiCompass/.github/workflows/persist_changes.yml@main
+      uses: Testing-Forecast-Actions/RespiCompass/.github/workflows/persist_changes.yml@main
       with:
         changes-list: ${{ needs.validate-submission_job.outputs.changed_files }}
   
