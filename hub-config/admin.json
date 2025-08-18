@@ -7,7 +7,7 @@
         "email": "paolo.milano@isi.it"
     },   
     "repository": {
-        "name": "https://github.com/european-modelling-hubs/RespiCompass"
+        "name": "https://github.com/Testing-Forecast-Actions/RespiCompass"
     },
 
     "file_format": ["csv", "parquet"],
