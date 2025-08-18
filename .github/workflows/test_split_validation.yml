@@ -43,6 +43,15 @@ jobs:
               packages: hubverse-org/hubValidations, any::sessioninfo
 
 
+          - name: Installing dependencies
+            run: |
+              install.packages("remotes")
+              install.packages("dplyr")
+              install.packages("optparse")
+              install.packages("purrr")
+            shell: Rscript {0}
+
+
           # Install System dependencies
           # ---------------------------------
           - name: Install system dependencies
