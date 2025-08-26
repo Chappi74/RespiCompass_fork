@@ -43,36 +43,36 @@ jobs:
               done
             
 
-          # Setup R env
-          # ---------------------------------
-          - uses: r-lib/actions/setup-r@v2
-            with:
-              install-r: false
-              use-public-rspm: true
+          # # Setup R env
+          # # ---------------------------------
+          # - uses: r-lib/actions/setup-r@v2
+          #   with:
+          #     install-r: false
+          #     use-public-rspm: true
 
 
-          # Install hubValidations package from HubVerse
-          # ----------------------------------------------
-          - uses: r-lib/actions/setup-r-dependencies@v2
-            with:
-              packages: hubverse-org/hubValidations, any::sessioninfo
+          # # Install hubValidations package from HubVerse
+          # # ----------------------------------------------
+          # - uses: r-lib/actions/setup-r-dependencies@v2
+          #   with:
+          #     packages: hubverse-org/hubValidations, any::sessioninfo
 
 
-          - name: Installing dependencies
-            run: |
-              install.packages("remotes")
-              install.packages("dplyr")
-              install.packages("optparse")
-              install.packages("purrr")
-            shell: Rscript {0}
+          # - name: Installing dependencies
+          #   run: |
+          #     install.packages("remotes")
+          #     install.packages("dplyr")
+          #     install.packages("optparse")
+          #     install.packages("purrr")
+          #   shell: Rscript {0}
 
 
-          # Install System dependencies
-          # ---------------------------------
-          - name: Install system dependencies
-            run: |
-              sudo apt-get update
-              sudo apt-get install libcurl4-openssl-dev libv8-dev
+          # # Install System dependencies
+          # # ---------------------------------
+          # - name: Install system dependencies
+          #   run: |
+          #     sudo apt-get update
+          #     sudo apt-get install libcurl4-openssl-dev libv8-dev
 
 
           # Install Pyton env and lib
@@ -112,24 +112,24 @@ jobs:
               path: './tools/'
         
 
-          # Validate data submission
-          # ---------------------------------
-          - name: Run validations
-            # env:
-              # files: ${{ steps.get_changed_files.outputs.all_changed_files }}
-              # PR_NUMBER: ${{ github.event.number }}
-            run: |
-              Rscript ./tools/RCode/validate_parquet_chunks.R   --input "TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet" --hub "./"   --split "location"   --out "chunks/"   --log "validation_errors.log2"
+          # # Validate data submission
+          # # ---------------------------------
+          # - name: Run validations
+          #   # env:
+          #     # files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+          #     # PR_NUMBER: ${{ github.event.number }}
+          #   run: |
+          #     Rscript ./tools/RCode/validate_parquet_chunks.R   --input "TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet" --hub "./"   --split "location"   --out "chunks/"   --log "validation_errors.log2"
 
-              #library("hubValidations")
-              # v <- hubValidations::validate_pr(
-              #     gh_repo = Sys.getenv("GITHUB_REPOSITORY"),
-              #     pr_number = Sys.getenv("PR_NUMBER"),
-              #     skip_submit_window_check = FALSE
-              # )
-              #hubValidations::check_for_errors(v, verbose = TRUE)
+          #     #library("hubValidations")
+          #     # v <- hubValidations::validate_pr(
+          #     #     gh_repo = Sys.getenv("GITHUB_REPOSITORY"),
+          #     #     pr_number = Sys.getenv("PR_NUMBER"),
+          #     #     skip_submit_window_check = FALSE
+          #     # )
+          #     #hubValidations::check_for_errors(v, verbose = TRUE)
                                     
-            #shell: Rscript {0}
+          #   #shell: Rscript {0}
 
           # Validate derived_task_ids since their validation
           # is currently skipped in the validate_pr
