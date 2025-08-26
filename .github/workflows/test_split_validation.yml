@@ -19,14 +19,29 @@ jobs:
     validate-submission_job:
         runs-on: ubuntu-22.04
         
-        # outputs:
-        #   changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+        outputs:
+          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
 
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
 
         steps:
+
+          # Get changes from pull request for later use
+          # --------------------------------------------      
+          - name: Get changes
+            id: get_changed_files
+            uses: tj-actions/changed-files@v46
+
+          # Trace changes 
+          # ---------------------------------
+          - name: List all changed files
+            run: |
+              for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
+                echo "$file was changed"
+              done
+            
 
           # Setup R env
           # ---------------------------------
@@ -71,26 +86,22 @@ jobs:
           # checkout the repository with reference to the SHA of the HEAD 
           # commit of the branch that is being merged into the Base
           # ------------------------------------------------------------------
-          # - name: Checkout repository
-          #   uses: actions/checkout@v3
-          #   with:
-          #     ref: ${{ github.event.pull_request.head.sha }}
-          #     fetch-depth: 1
+          - name: Checkout repository
+            uses: actions/checkout@v3
+            with:
+              ref: ${{ github.event.pull_request.head.sha }}
+              fetch-depth: 1
+              path: './pr_repo/'
 
-
+          # commit of the branch that is being merged into the Base
+          # ------------------------------------------------------------------
           - name: Checkout repository
             uses: actions/checkout@v3
             with:
               ref: 'main'
-              # path: './repo/'
+              path: './repo/'
 
-          # Get changes from pull request for later use
-          # --------------------------------------------      
-          # - name: Get changes
-          #   id: get_changed_files
-          #   uses: tj-actions/changed-files@v46
-
-
+          
           # Checkout the python tools repo
           # -------------------------------------------      
           - name: checkout python tools repo
@@ -100,14 +111,6 @@ jobs:
               ref: 'main'
               path: './tools/'
         
-          # Trace changes 
-          # ---------------------------------
-          # - name: List all changed files
-          #   run: |
-          #     for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
-          #       echo "$file was changed"
-          #     done
-
 
           # Validate data submission
           # ---------------------------------
@@ -138,43 +141,43 @@ jobs:
 
           # Eventually comment on it
           # ---------------------------
-          # - name: Comment PR
-          #   uses: thollander/actions-comment-pull-request@v2
-          #   with:
-          #     message: |
-          #       All validation checks completed successfully.
-          #     pr_number: ${{ github.event.pull_request.number }}
+          - name: Comment PR
+            uses: thollander/actions-comment-pull-request@v2
+            with:
+              message: |
+                All validation checks completed successfully.
+              pr_number: ${{ github.event.pull_request.number }}
 
 
           # Approve the pull request 
           # ---------------------------
-          # - name: Approve Pull Request
-          #   uses: juliangruber/approve-pull-request-action@v2.0.0
-          #   with:
-          #     github-token: ${{ secrets.GITHUB_TOKEN }}
-          #     number: ${{ github.event.pull_request.number }}
+          - name: Approve Pull Request
+            uses: juliangruber/approve-pull-request-action@v2.0.0
+            with:
+              github-token: ${{ secrets.GITHUB_TOKEN }}
+              number: ${{ github.event.pull_request.number }}
 
 
 
           # And then finally do the merge
           # -------------------------------
-          # - name: Merge the pull request
-          #   id: merge_pr
-          #   run: |
-          #     echo ">>> Merging PR URL: ${{ github.event.pull_request.html_url }}"
-          #     gh pr merge --auto --squash $PR_URL
-          #   env:
-          #     PR_URL: ${{ github.event.pull_request.html_url }}
-          #     GH_TOKEN: ${{ github.token }}
+          - name: Merge the pull request
+            id: merge_pr
+            run: |
+              echo ">>> Merging PR URL: ${{ github.event.pull_request.html_url }}"
+              gh pr merge --auto --squash $PR_URL
+            env:
+              PR_URL: ${{ github.event.pull_request.html_url }}
+              GH_TOKEN: ${{ github.token }}
 
 
     # As a last step, call a job that persists changes from the pull-request
     # to a json db for further upload to the web-server platform
-    # call-persisting-wf_job:
-    #   needs: validate-submission_job
-    #   uses: Testing-Forecast-Actions/RespiCompass/.github/workflows/persist_changes.yml@main
-    #   with:
-    #     changes-list: ${{ needs.validate-submission_job.outputs.changed_files }}
+    call-persisting-wf_job:
+      needs: validate-submission_job
+      uses: Testing-Forecast-Actions/RespiCompass/.github/workflows/persist_changes.yml@main
+      with:
+        changes-list: ${{ needs.validate-submission_job.outputs.changed_files }}
   
-    #   secrets:
-    #     envPAT: ${{ secrets.GITHUB_TOKEN }}
+      secrets:
+        envPAT: ${{ secrets.GITHUB_TOKEN }}
