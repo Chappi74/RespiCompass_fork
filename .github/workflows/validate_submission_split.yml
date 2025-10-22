@@ -40,7 +40,10 @@ jobs:
             with:
               packages: |
                 hubverse-org/hubValidations
+                arrow
+                dplyr
                 optparse
+                purrr
                 any::sessioninfo
 
 
