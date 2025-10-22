@@ -38,7 +38,10 @@ jobs:
           # ----------------------------------------------
           - uses: r-lib/actions/setup-r-dependencies@v2
             with:
-              packages: hubverse-org/hubValidations, any::sessioninfo
+              packages: |
+                hubverse-org/hubValidations
+                optparse
+                any::sessioninfo
 
 
           # Install System dependencies
