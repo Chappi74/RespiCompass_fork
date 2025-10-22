@@ -101,7 +101,7 @@ jobs:
             run: |
               Rscript ./tools/RCode/validate_pr_custom.R \
                 --hub_path . \
-                --all_changed_files "${{ steps.all-files.outputs.all_changed_files }}" \
+                --all_changed_files "${{ steps.get_changed_files.outputs.all_changed_files }}" \
                 --check_submit_window TRUE
               # validate_parquet_chunks.R   --input TestTeam-TestModel/2025_2026_1_RSV-TestTeam-TestModel.parquet   
               # --hub ./   --split location   --out chunks/   --log validation_errors.log2
