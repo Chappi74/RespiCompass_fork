@@ -114,7 +114,7 @@ jobs:
               # )
               #hubValidations::check_for_errors(v, verbose = TRUE)
                                     
-            shell: Rscript {0}
+            # shell: Rscript {0}
 
           # Validate derived_task_ids since their validation
           # is currently skipped in the validate_pr
