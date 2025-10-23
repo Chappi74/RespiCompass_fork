@@ -78,6 +78,8 @@ jobs:
           - name: Get changes
             id: get_changed_files
             uses: tj-actions/changed-files@v46
+            with:
+              separator: ","
 
 
           # Checkout the python tools repo
